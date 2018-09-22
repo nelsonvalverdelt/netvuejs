@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="app">
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Test</h1>
+        <button type="submit" class="btn btn-primary" @@click.prevent="btnLista">
+            Listar Usuarios
+        </button>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Correo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="user in list">
+                <th scope="row">{{user.id}}</th>
+                <td>{{user.name}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.email}}</td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+<script>
+    var url = window.location.protocol + "//" + window.location.host;
+
+    var app = new Vue({
+        el: "#app",
+        data: {
+            list: []
+        },
+
+        methods: {
+            btnLista: function () {
+                var self = this;
+                axios.get(url + "/users/get", {
+                }).then(response => {
+                    var data = response.data;
+                    self.list = data;
+                }).catch(error => {
+                    console.log(error);
+                });
+
+            }
+        }
+    });
+</script>
+
